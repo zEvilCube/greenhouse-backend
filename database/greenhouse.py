@@ -2,10 +2,9 @@ from database import auth, get_session
 from database.models import Greenhouse
 
 
-def create() -> Greenhouse:
-    greenhouse = Greenhouse()
+def create() -> int:
     with get_session() as session:
+        greenhouse = Greenhouse()
         session.add(greenhouse)
         session.commit()
-    auth.generate(greenhouse)
-    return greenhouse
+        return auth.generate(greenhouse.id)
