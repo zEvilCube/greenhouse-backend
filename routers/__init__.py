@@ -1,5 +1,7 @@
 from flask import Blueprint
 
-blueprints: list[Blueprint] = [
+from routers import api
 
+blueprints: list[Blueprint] = [
+    api.blueprint
 ]

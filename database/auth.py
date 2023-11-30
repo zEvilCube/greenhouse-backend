@@ -1,23 +1,23 @@
 from secrets import token_urlsafe
 
 from database import get_session
-from database.models import Auth, Greenhouse
+from database.models import Auth
 
 
-def generate(greenhouse: Greenhouse) -> Auth:
-    auth = Auth(greenhouse_id=greenhouse.id, api_key=token_urlsafe())
+def generate(greenhouse_id: int) -> int:
     with get_session() as session:
+        auth = Auth(greenhouse_id=greenhouse_id, api_key=token_urlsafe())
         session.merge(auth)
         session.commit()
-    return auth
+        return auth.greenhouse_id
 
 
-def get(api_key: str) -> Greenhouse | None:
+def get(api_key: str) -> int | None:
     with get_session() as session:
         auth = session.query(Auth).filter_by(api_key=api_key).first()
         if auth is None:
             return None
-        return auth.greenhouse
+        return auth.greenhouse_id
 
 
 def validate(api_key: str) -> bool:
