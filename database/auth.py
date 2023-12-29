@@ -4,12 +4,13 @@ from database import get_session
 from database.models import Auth
 
 
-def generate(greenhouse_id: int) -> int:
+def generate(greenhouse_id: int) -> str:
     with get_session() as session:
-        auth = Auth(greenhouse_id=greenhouse_id, api_key=token_urlsafe())
+        api_key = token_urlsafe()
+        auth = Auth(greenhouse_id=greenhouse_id, api_key=api_key)
         session.merge(auth)
         session.commit()
-        return auth.greenhouse_id
+        return api_key
 
 
 def get(api_key: str) -> int | None:

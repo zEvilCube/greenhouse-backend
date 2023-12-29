@@ -1,7 +1,9 @@
 from flask import Flask
 
+from config import config
 import database
 from routers import blueprints
+
 
 app = Flask(__name__)
 for blueprint in blueprints:
@@ -9,4 +11,4 @@ for blueprint in blueprints:
 
 if __name__ == "__main__":
     database.init()
-    app.run()
+    app.run(host=config.server_host.get_secret_value(), port=config.server_port.get_secret_value())
