@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, make_response, request, abort
-from database import auth, readings, references, statuses
+from database import auth, greenhouse, readings, references, statuses
 
 blueprint = Blueprint("api", __name__)
 
@@ -7,6 +7,12 @@ blueprint = Blueprint("api", __name__)
 @blueprint.route("/echo")
 def echo_handler():
     return make_response(jsonify(request.args))
+
+
+@blueprint.route("/create")
+def create_handler():
+    greenhouse_id, api_key = greenhouse.create()
+    return make_response(jsonify({"id": greenhouse_id, "api_key": api_key}))
 
 
 @blueprint.route("/auth", methods=["GET"])
